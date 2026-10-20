@@ -52,13 +52,14 @@ func (s *postService) Create(req *models.CreatePostRequest, authorID uint) (*mod
 	}
 
 	post := &models.Post{
-		Title:      req.Title,
-		Slug:       slug,
-		Content:    req.Content,
-		Excerpt:    req.Excerpt,
-		CategoryID: req.CategoryID,
-		AuthorID:   authorID,
-		Status:     status,
+		Title:        req.Title,
+		Slug:         slug,
+		Content:      req.Content,
+		Excerpt:      req.Excerpt,
+		ThumbnailURL: req.ThumbnailURL,
+		CategoryID:   req.CategoryID,
+		AuthorID:     authorID,
+		Status:       status,
 	}
 
 	if err := s.postRepo.Create(post); err != nil {
@@ -101,6 +102,9 @@ func (s *postService) Update(id uint, req *models.UpdatePostRequest, userID uint
 	}
 	if req.Excerpt != nil {
 		post.Excerpt = *req.Excerpt
+	}
+	if req.ThumbnailURL != nil {
+		post.ThumbnailURL = *req.ThumbnailURL
 	}
 	if req.CategoryID != nil {
 		// Verify new category exists

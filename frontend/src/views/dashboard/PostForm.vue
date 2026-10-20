@@ -367,7 +367,7 @@ const handleSubmit = async () => {
     excerpt: form.excerpt.trim() || undefined,
     category_id: parseInt(form.category_id),
     status: form.status,
-    featured_image: form.featured_image || undefined,
+    thumbnail_url: form.featured_image || undefined,
     meta_title: form.meta_title.trim() || undefined,
     meta_description: form.meta_description.trim() || undefined
   }
@@ -456,7 +456,7 @@ const loadPost = async () => {
       excerpt: post.excerpt || '',
       category_id: post.category_id,
       status: post.status,
-      featured_image: post.featured_image || '',
+      featured_image: post.thumbnail_url || '',
       meta_title: post.meta_title || '',
       meta_description: post.meta_description || ''
     })

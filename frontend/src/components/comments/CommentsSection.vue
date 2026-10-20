@@ -230,12 +230,12 @@ const loadComments = async (page = 1) => {
     const response = await api.get(`/comments/post/${props.postId}?page=${page}&limit=10`)
     
     if (page === 1) {
-      comments.value = response.data.data
+      comments.value = response.data.data.data
     } else {
-      comments.value.push(...response.data.data)
+      comments.value.push(...response.data.data.data)
     }
     
-    hasMoreComments.value = response.data.pagination.has_more
+    hasMoreComments.value = response.data.data.page < response.data.data.total_pages
     currentPage.value = page
   } catch (error) {
     console.error('Error loading comments:', error)

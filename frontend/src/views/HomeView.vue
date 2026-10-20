@@ -159,16 +159,29 @@ onMounted(async () => {
     featuredPosts.value = postsStore.posts
 
     // Fetch categories
-    categories.value = await categoriesStore.fetchCategories()
-    
-    // Add structured data for homepage
-    const websiteSchema = createWebsiteJsonLd()
-    const organizationSchema = createOrganizationJsonLd()
-    
-    // Inject JSON-LD into head
-    document.head.appendChild(websiteSchema)
-    document.head.appendChild(organizationSchema)
-    
+    const categoriesResponse = await categoriesStore.fetchCategories()
+    categories.value = Array.isArray(categoriesResponse?.data)
+      ? categoriesResponse.data
+      : []
+
+    const schemas = [
+      createWebsiteJsonLd(),
+      createOrganizationJsonLd()
+    ]
+
+    for (const schema of schemas) {
+      const script = document.createElement('script')
+      script.type = 'application/ld+json'
+      script.dataset.homeSchema = schema['@type']
+      script.textContent = JSON.stringify(schema)
+
+      const existing = document.head.querySelector(
+        `script[data-home-schema="${schema['@type']}"]`
+      )
+      if (existing) existing.remove()
+      document.head.appendChild(script)
+    }
+
   } catch (error) {
     console.error('Failed to fetch data:', error)
     if (window.toast) {

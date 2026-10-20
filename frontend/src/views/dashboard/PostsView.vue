@@ -121,8 +121,8 @@
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
                       <img
-                        v-if="post.featured_image"
-                        :src="post.featured_image"
+                        v-if="post.thumbnail_url"
+                        :src="post.thumbnail_url"
                         :alt="post.title"
                         class="h-10 w-10 rounded-lg object-cover"
                       />

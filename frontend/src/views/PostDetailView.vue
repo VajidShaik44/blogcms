@@ -36,9 +36,9 @@
     <!-- Post Content -->
     <article v-else class="prose prose-lg max-w-none">
       <!-- Featured Image -->
-      <div v-if="post.featured_image" class="mb-8">
+      <div v-if="post.thumbnail_url" class="mb-8">
         <img
-          :src="post.featured_image"
+          :src="post.thumbnail_url"
           :alt="post.title"
           class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
         />
@@ -222,7 +222,7 @@ const headData = computed(() => {
   const baseUrl = import.meta.env.VITE_APP_URL || 'https://your-domain.com'
   const postUrl = `${baseUrl}/posts/${post.value.slug}`
   const description = extractTextFromHTML(post.value.excerpt || post.value.content, 160)
-  const image = post.value.featured_image || `${baseUrl}/og-image.jpg`
+  const image = post.value.thumbnail_url || `${baseUrl}/og-image.jpg`
 
   return {
     title: `${post.value.title} - Blog CMS`,

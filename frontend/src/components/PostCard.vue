@@ -3,8 +3,8 @@
     <!-- Featured Image -->
     <div class="aspect-w-16 aspect-h-9 bg-secondary-200">
       <LazyImage
-        v-if="post.featured_image"
-        :src="post.featured_image"
+        v-if="post.thumbnail_url"
+        :src="post.thumbnail_url"
         :alt="post.title"
         class="object-cover w-full h-48"
         loading-class="bg-secondary-200 animate-pulse"

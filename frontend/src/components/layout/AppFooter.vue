@@ -92,7 +92,7 @@ const currentYear = new Date().getFullYear()
 
 onMounted(async () => {
   try {
-    categories.value = await categoriesStore.fetchCategories()
+    categories.value = (await categoriesStore.fetchCategories()).data
   } catch (error) {
     console.error('Failed to fetch categories:', error)
   }
