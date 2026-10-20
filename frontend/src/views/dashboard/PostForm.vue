@@ -421,7 +421,7 @@ const handleImageUpload = async (event) => {
       uploadProgress.value = progress
     })
 
-    form.featured_image = result.data.url
+    form.featured_image = result.url
     
     if (window.toast) {
       window.toast.success('Success', 'Image uploaded successfully!')

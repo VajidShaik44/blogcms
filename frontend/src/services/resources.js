@@ -139,7 +139,7 @@ export const uploadApi = {
       }
     }
 
-    const response = await api.post('/upload/image', formData, config)
+    const response = await api.post('/uploads/images', formData, config)
     return response.data
   }
 }

@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
-    allowedHosts: ['cmsapp.duckdns.org'],
+    allowedHosts: ['cmsapp.duckdns.org', 'mahitha.duckdns.org'],
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
@@ -30,13 +30,7 @@ export default defineConfig({
     assetsInlineLimit: 4096, // Inline small assets
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Core vendor chunks
-          'vendor-vue': ['vue', 'vue-router'],
-          'vendor-pinia': ['pinia'],
-          'vendor-ui': ['@headlessui/vue', '@heroicons/vue'],
-          'vendor-utils': ['axios', 'date-fns'],
-        },
+
         chunkFileNames: (chunkInfo) => {
           // Better chunk naming for caching
           const facadeModuleId = chunkInfo.facadeModuleId

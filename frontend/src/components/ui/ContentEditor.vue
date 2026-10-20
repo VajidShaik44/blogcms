@@ -294,7 +294,7 @@ const handleImageUpload = async (event) => {
     })
 
     // Insert image markdown
-    const imageMarkdown = `![${file.name}](${result.data.url})`
+    const imageMarkdown = `![${file.name}](${result.url})`
     const textarea = textareaRef.value
     
     if (textarea) {

@@ -102,3 +102,23 @@ temp/
 # Monitoring and metrics
 prometheus/
 grafana/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# Dependencies and generated output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+backend/tmp/
+coverage/
+*.log
+
+# Local IDE and OS files
+.vscode/
+.idea/
+.DS_Store

@@ -21,6 +21,25 @@
       <!-- Register Form -->
       <form @submit.prevent="handleRegister" class="mt-8 space-y-6">
         <div class="space-y-4">
+          <!-- Username -->
+          <div>
+            <label for="username" class="label">Username</label>
+            <input
+              id="username"
+              v-model="form.username"
+              type="text"
+              required
+              minlength="3"
+              maxlength="50"
+              pattern="[A-Za-z0-9]+"
+              autocomplete="username"
+              class="input"
+              :class="{ 'border-red-300 focus:border-red-500 focus:ring-red-500': errors.username }"
+              placeholder="Choose a username (letters and numbers only)"
+            />
+            <p v-if="errors.username" class="text-red-600 text-sm mt-1">{{ errors.username }}</p>
+          </div>
+
           <!-- Name -->
           <div>
             <label for="name" class="label">Full Name</label>
@@ -216,7 +235,9 @@ const passwordRequirements = computed(() => [
 ])
 
 const isFormValid = computed(() => {
-  return form.name && form.email && form.password && form.confirmPassword && 
+  return /^[a-zA-Z0-9]{3,50}$/.test(form.username.trim()) &&
+         form.name.trim().length >= 2 && form.email.trim() &&
+         form.password && form.confirmPassword &&
          form.password === form.confirmPassword && form.terms &&
          passwordRequirements.value.every(req => req.met)
 })
@@ -224,6 +245,12 @@ const isFormValid = computed(() => {
 const validateForm = () => {
   errors.value = {}
   
+
+  if (!form.username.trim()) {
+    errors.value.username = 'Username is required'
+  } else if (!/^[a-zA-Z0-9]{3,50}$/.test(form.username.trim())) {
+    errors.value.username = 'Username must be 3-50 characters and contain only letters and numbers'
+  }
   if (!form.name.trim()) {
     errors.value.name = 'Full name is required'
   } else if (form.name.trim().length < 2) {
@@ -265,8 +292,9 @@ const handleRegister = async () => {
   }
   
   const result = await authStore.register({
+    username: form.username.trim(),
     name: form.name.trim(),
-    email: form.email,
+    email: form.email.trim(),
     password: form.password
   })
   
