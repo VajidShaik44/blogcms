@@ -22,6 +22,62 @@
       </div>
     </section>
 
+    <section id="devops-project" class="py-16 bg-secondary-900 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-primary-300 mb-3">
+              Deployed portfolio project
+            </p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+              BlogCMS: built and operated as a DevOps project
+            </h2>
+            <p class="text-secondary-300 text-lg">
+              A full-stack blogging platform deployed on an Ubuntu VPS with production-style
+              process management, HTTPS, and a reverse-proxy architecture.
+            </p>
+            <div class="flex flex-wrap gap-4 mt-8">
+              <a
+                href="https://github.com/VajidShaik44/blogcms"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn bg-white text-secondary-900 hover:bg-secondary-100 btn-lg"
+              >
+                View source on GitHub
+              </a>
+              <a
+                href="https://vajidshaik44.github.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn border border-secondary-500 text-white hover:bg-secondary-800 btn-lg"
+              >
+                Visit portfolio
+              </a>
+            </div>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            <article class="rounded-lg border border-secondary-700 bg-secondary-800 p-5">
+              <h3 class="font-semibold text-primary-300 mb-2">Application stack</h3>
+              <p class="text-secondary-200 text-sm">Vue 3 frontend, Go API, and MySQL database.</p>
+            </article>
+            <article class="rounded-lg border border-secondary-700 bg-secondary-800 p-5">
+              <h3 class="font-semibold text-primary-300 mb-2">Reverse proxy & TLS</h3>
+              <p class="text-secondary-200 text-sm">Nginx routes API traffic and serves the frontend over HTTPS.</p>
+            </article>
+            <article class="rounded-lg border border-secondary-700 bg-secondary-800 p-5">
+              <h3 class="font-semibold text-primary-300 mb-2">Service management</h3>
+              <p class="text-secondary-200 text-sm">The Go API runs as a systemd service with restart-on-failure.</p>
+            </article>
+            <article class="rounded-lg border border-secondary-700 bg-secondary-800 p-5">
+              <h3 class="font-semibold text-primary-300 mb-2">Delivery & operations</h3>
+              <p class="text-secondary-200 text-sm">Git-based deployment, health checks, and centralized service logs.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Featured Posts -->
     <section class="py-16 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
