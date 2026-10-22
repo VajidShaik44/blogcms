@@ -3,6 +3,7 @@ package middleware_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"sync"
 	"testing"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/time/rate"
 )
 
 func TestRateLimitMiddleware(t *testing.T) {
@@ -119,6 +121,23 @@ func TestAdvancedRateLimitMiddleware(t *testing.T) {
 		
 		assert.True(t, success, "Regular endpoints should allow more requests")
 	})
+}
+
+func TestRateLimiterConcurrentGetLimiter(t *testing.T) {
+	limiter := middleware.NewRateLimiter()
+
+	const requests = 100
+	var wg sync.WaitGroup
+	wg.Add(requests)
+
+	for i := 0; i < requests; i++ {
+		go func() {
+			defer wg.Done()
+			assert.NotNil(t, limiter.GetLimiter("same-client:/api/v1/posts", rate.Every(time.Second), 10))
+		}()
+	}
+
+	wg.Wait()
 }
 
 func TestCORSMiddleware(t *testing.T) {

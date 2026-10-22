@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"backend/internal/models"
@@ -72,6 +73,7 @@ func RateLimitMiddleware(requestsPerMinute float64) gin.HandlerFunc {
 
 // Advanced rate limiting with different tiers
 type RateLimiter struct {
+	mu       sync.RWMutex
 	limiters map[string]*rate.Limiter
 }
 
@@ -82,10 +84,19 @@ func NewRateLimiter() *RateLimiter {
 }
 
 func (rl *RateLimiter) GetLimiter(key string, r rate.Limit, b int) *rate.Limiter {
+	rl.mu.RLock()
+	if limiter, exists := rl.limiters[key]; exists {
+		rl.mu.RUnlock()
+		return limiter
+	}
+	rl.mu.RUnlock()
+
+	rl.mu.Lock()
+	defer rl.mu.Unlock()
+
 	if limiter, exists := rl.limiters[key]; exists {
 		return limiter
 	}
-
 	newLimiter := rate.NewLimiter(r, b)
 	rl.limiters[key] = newLimiter
 	return newLimiter
