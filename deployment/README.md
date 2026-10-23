@@ -201,6 +201,10 @@ Pull requests build and scan the API and frontend images but do not publish them
 
 The workflow publishes the same image artifacts that passed Trivy, and does not deploy them to the VPS. GHCR package visibility is managed separately in the repository's package settings.
 
+## ☸️ Kubernetes Test Deployment
+
+Kubernetes manifests and staging-cluster instructions are in [deployment/kubernetes](./kubernetes/README.md). They use an external MySQL database and do not modify the current VPS or production DNS.
+
 ## 🔧 Useful Commands
 
 ### Application Management
