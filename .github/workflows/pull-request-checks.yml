@@ -33,6 +33,10 @@ jobs:
         with:
           go-version-file: backend/go.mod
           cache-dependency-path: backend/go.sum
+      - name: Verify Go module files
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
       - name: Run backend tests
         run: go test -race -timeout 60s -short ./internal/services/... ./internal/repositories/tests/...
         env:
@@ -96,6 +100,7 @@ jobs:
             image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
             "blogcms-backend:pr-${GITHUB_SHA}"
       - name: Scan frontend image
+        if: always()
         run: |
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
