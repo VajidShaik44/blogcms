@@ -38,9 +38,9 @@ type Category struct {
 
 type Post struct {
 	ID           uint           `json:"id" gorm:"primaryKey"`
-	Title        string         `json:"title" gorm:"not null;size:255;index:idx_posts_title"`
+	Title        string         `json:"title" gorm:"not null;size:255;index:idx_posts_title;index:idx_posts_fulltext,class:FULLTEXT"`
 	Slug         string         `json:"slug" gorm:"uniqueIndex;not null;size:255"`
-	Content      string         `json:"content" gorm:"not null;type:text"`
+	Content      string         `json:"content" gorm:"not null;type:text;index:idx_posts_fulltext,class:FULLTEXT"`
 	Excerpt      string         `json:"excerpt" gorm:"type:text"`
 	ThumbnailURL string         `json:"thumbnail_url" gorm:"size:500"`
 	CategoryID   uint           `json:"category_id" gorm:"not null;index:idx_posts_category_id,idx_posts_category_status"`
