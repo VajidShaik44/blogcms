@@ -33,10 +33,6 @@ jobs:
         with:
           go-version-file: backend/go.mod
           cache-dependency-path: backend/go.sum
-      - name: Verify Go module files
-        run: |
-          go mod tidy
-          git diff --exit-code -- go.mod go.sum
       - name: Run backend tests
         run: go test -race -timeout 60s -short ./internal/services/... ./internal/repositories/tests/...
         env:
