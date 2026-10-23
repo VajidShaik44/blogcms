@@ -86,11 +86,20 @@ jobs:
           file: ./frontend/Dockerfile
           tags: blogcms-frontend:pr-${{ github.sha }}
           load: true
-      - name: Install Trivy
-        uses: aquasecurity/setup-trivy@v0.3.1
-        with:
-          version: v0.57.1
       - name: Scan API image
-        run: trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "blogcms-backend:pr-${GITHUB_SHA}"
+        run: |
+          mkdir -p "${RUNNER_TEMP}/trivy-cache"
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "${RUNNER_TEMP}/trivy-cache:/root/.cache/" \
+            aquasec/trivy:0.57.1 \
+            image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
+            "blogcms-backend:pr-${GITHUB_SHA}"
       - name: Scan frontend image
-        run: trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "blogcms-frontend:pr-${GITHUB_SHA}"
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "${RUNNER_TEMP}/trivy-cache:/root/.cache/" \
+            aquasec/trivy:0.57.1 \
+            image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
+            "blogcms-frontend:pr-${GITHUB_SHA}"
