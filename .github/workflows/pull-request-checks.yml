@@ -33,7 +33,7 @@ jobs:
         with:
           go-version-file: backend/go.mod
           cache-dependency-path: backend/go.sum
-      - name: Run backend unit tests
+      - name: Run backend tests
         run: go test -race -timeout 60s -short ./internal/services/... ./internal/repositories/tests/...
         env:
           DB_HOST: 127.0.0.1
@@ -86,19 +86,11 @@ jobs:
           file: ./frontend/Dockerfile
           tags: blogcms-frontend:pr-${{ github.sha }}
           load: true
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.3.1
+        with:
+          version: v0.57.1
       - name: Scan API image
-        uses: aquasecurity/trivy-action@v0.28.0
-        with:
-          image-ref: blogcms-backend:pr-${{ github.sha }}
-          format: table
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: "1"
+        run: trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "blogcms-backend:pr-${GITHUB_SHA}"
       - name: Scan frontend image
-        uses: aquasecurity/trivy-action@v0.28.0
-        with:
-          image-ref: blogcms-frontend:pr-${{ github.sha }}
-          format: table
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: "1"
+        run: trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "blogcms-frontend:pr-${GITHUB_SHA}"
