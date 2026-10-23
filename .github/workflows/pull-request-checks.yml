@@ -87,7 +87,7 @@ jobs:
           tags: blogcms-frontend:pr-${{ github.sha }}
           load: true
       - name: Scan API image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           image-ref: blogcms-backend:pr-${{ github.sha }}
           format: table
@@ -95,7 +95,7 @@ jobs:
           ignore-unfixed: true
           exit-code: "1"
       - name: Scan frontend image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.28.0
         with:
           image-ref: blogcms-frontend:pr-${{ github.sha }}
           format: table
