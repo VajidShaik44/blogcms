@@ -1,13 +1,13 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# The production build uses Vite and Vite SSG from devDependencies.
+RUN npm ci
 
 # Copy source code
 COPY . .

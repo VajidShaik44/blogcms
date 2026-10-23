@@ -64,3 +64,41 @@ jobs:
         run: npm run lint
       - name: Build frontend
         run: npm run build
+
+  container-images:
+    name: Build and scan container images
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build API image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          tags: blogcms-backend:pr-${{ github.sha }}
+          load: true
+      - name: Build frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          tags: blogcms-frontend:pr-${{ github.sha }}
+          load: true
+      - name: Scan API image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: blogcms-backend:pr-${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: Scan frontend image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: blogcms-frontend:pr-${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
