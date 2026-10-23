@@ -15,7 +15,7 @@ export function useSEO(options = {}) {
 
   const seoOptions = { ...defaultOptions, ...options }
 
-  const head = useHead({
+  useHead({
     title: computed(() => seoOptions.title),
     meta: [
       {

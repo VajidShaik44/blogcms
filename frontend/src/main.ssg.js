@@ -18,7 +18,7 @@ export const createApp = ViteSSG(
       }
     }
   },
-  ({ app, router, routes, isClient, initialState }) => {
+  ({ app, isClient, initialState }) => {
     // Install plugins
     const pinia = createPinia()
     const head = createHead()

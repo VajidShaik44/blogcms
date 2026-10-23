@@ -12,12 +12,6 @@ const STATIC_RESOURCES = [
   // Add critical CSS and JS files here
 ];
 
-// API endpoints to cache
-const API_CACHE_PATTERNS = [
-  /\/api\/v1\/posts/,
-  /\/api\/v1\/categories/,
-];
-
 // Install event - cache static resources
 self.addEventListener('install', (event) => {
   event.waitUntil(

@@ -16,7 +16,7 @@
     "generate:sitemap": "node scripts/generate-sitemap.js",
     "generate:rss": "node scripts/generate-rss.js",
     "postbuild": "npm run seo:build",
-    "lint": "eslint . --ext vue,js,jsx,cjs,mjs --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext vue,js,jsx,cjs,mjs --ignore-pattern dist/ --ignore-pattern .vite-ssg-temp/",
     "format": "prettier --write src/"
   },
   "dependencies": {

@@ -54,12 +54,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const removeStorageItem = (key) => {
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      localStorage.removeItem(key)
-    }
-  }
-
   const login = async (credentials) => {
     isLoading.value = true
     try {
