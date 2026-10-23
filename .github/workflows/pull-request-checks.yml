@@ -3,6 +3,9 @@ name: Pull Request Checks
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    tags: ['v*']
 
 permissions:
   contents: read
@@ -104,3 +107,74 @@ jobs:
             aquasec/trivy:0.57.1 \
             image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
             "blogcms-frontend:pr-${GITHUB_SHA}"
+      - name: Save scanned images
+        if: github.event_name == 'push'
+        run: |
+          docker save \
+            "blogcms-backend:pr-${GITHUB_SHA}" \
+            "blogcms-frontend:pr-${GITHUB_SHA}" \
+            | gzip > "${RUNNER_TEMP}/blogcms-images.tar.gz"
+      - name: Upload scanned images
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: scanned-images-${{ github.sha }}
+          path: ${{ runner.temp }}/blogcms-images.tar.gz
+          retention-days: 1
+
+  publish-images:
+    name: Publish verified images to GHCR
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    needs: [backend, frontend, container-images]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Download scanned images
+        uses: actions/download-artifact@v4
+        with:
+          name: scanned-images-${{ github.sha }}
+          path: ${{ runner.temp }}
+      - name: Load scanned images
+        run: docker load --input "${RUNNER_TEMP}/blogcms-images.tar.gz"
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate API image tags
+        id: backend-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/backend
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha,format=long,prefix=sha-
+      - name: Generate frontend image tags
+        id: frontend-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/frontend
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha,format=long,prefix=sha-
+      - name: Tag and publish verified images
+        env:
+          BACKEND_TAGS: ${{ steps.backend-meta.outputs.tags }}
+          FRONTEND_TAGS: ${{ steps.frontend-meta.outputs.tags }}
+        run: |
+          while IFS= read -r tag; do
+            [ -n "$tag" ] || continue
+            docker tag "blogcms-backend:pr-${GITHUB_SHA}" "$tag"
+            docker push "$tag"
+          done <<< "$BACKEND_TAGS"
+
+          while IFS= read -r tag; do
+            [ -n "$tag" ] || continue
+            docker tag "blogcms-frontend:pr-${GITHUB_SHA}" "$tag"
+            docker push "$tag"
+          done <<< "$FRONTEND_TAGS"
