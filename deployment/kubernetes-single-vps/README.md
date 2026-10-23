@@ -10,8 +10,9 @@ The overlay pins both images to the main-branch commit `d815419b897b354ca442bfc3
 - The GHCR images for the pinned commit are available to the cluster. If either package is private, use a token restricted to `read:packages`.
 - The VPS private address is `172.31.24.111`; the Kubernetes pod CIDR is `10.42.0.0/16`.
 - AWS security-group ingress does not expose ports 3306 or 6443. Do not open database or Kubernetes API ports publicly.
-- The existing uploads directory is `/home/ubuntu/app-1/blogcms/backend/storage/uploads`, owned by `ubuntu` (UID 1000). The API pod runs as UID/GID 1000 so the old service and pod can access the same files.
+- The existing uploads directory is `/home/ubuntu/app-1/blogcms/backend/storage/uploads`, owned by `ubuntu` (UID/GID 1000). The API image runs as UID 1001; the pod uses GID 1000 to share upload access with the existing systemd service.
 - Confirm the uploads directory uses less than 5 GiB before binding it to the 5 GiB claim: `du -sh /home/ubuntu/app-1/blogcms/backend/storage/uploads`.
+- Allow the shared group to write uploads, while keeping `ubuntu` as owner: `sudo chmod -R g+rwX /home/ubuntu/app-1/blogcms/backend/storage/uploads`.
 - K3s uses its default `10.42.0.0/16` pod CIDR. If that is changed, update both the MySQL account host restriction and the cluster configuration.
 - This release adds a MySQL FULLTEXT index to `posts`; the API runs GORM `AutoMigrate` at startup. Test the migration against the restored backup before starting the API pod against production, since index creation may take locks.
 
