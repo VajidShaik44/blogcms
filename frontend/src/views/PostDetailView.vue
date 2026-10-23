@@ -189,7 +189,7 @@ import {
   LinkIcon
 } from '@heroicons/vue/24/outline'
 import { usePostsStore } from '@/stores/posts'
-import { useSEO, generateStructuredData, extractTextFromHTML } from '@/utils/seo'
+import { generateStructuredData, extractTextFromHTML } from '@/utils/seo'
 import PostCard from '@/components/PostCard.vue'
 import CommentsSection from '@/components/comments/CommentsSection.vue'
 
@@ -206,9 +206,6 @@ const readingTime = computed(() => {
   const words = post.value.content.replace(/<[^>]*>/g, '').split(/\s+/).length
   return Math.ceil(words / wordsPerMinute)
 })
-
-// SEO Configuration
-const { updateSEO } = useSEO()
 
 // Dynamic head management
 const headData = computed(() => {
@@ -418,7 +415,7 @@ const loadRelatedPosts = async () => {
   if (!post.value?.category?.id) return
   
   try {
-    const result = await postsStore.fetchPostsByCategory(post.value.category.id, { 
+    await postsStore.fetchPostsByCategory(post.value.category.id, {
       limit: 5,
       status: 'published' 
     })

@@ -220,13 +220,10 @@ import {
   TrashIcon
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
-import { usePostsStore } from '@/stores/posts'
 import DashboardHeader from '@/components/dashboard/DashboardHeader.vue'
 import api from '@/services/api'
 
 const authStore = useAuthStore()
-const postsStore = usePostsStore()
-
 const stats = ref({
   posts: 0,
   views: 0,

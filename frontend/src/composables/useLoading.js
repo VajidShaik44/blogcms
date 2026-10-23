@@ -33,11 +33,11 @@ export function useLoading(key = 'default') {
   const hasAnyLoading = computed(() => globalLoadingState.value.size > 0)
 
   // Start loading with optional message
-  const startLoading = (message = 'Loading...') => {
+  const startLoading = (_message = 'Loading...') => {
     isLoading.value = true
     return {
       updateProgress: (value) => { progress.value = value },
-      updateMessage: (msg) => { /* Could extend to support messages */ },
+      updateMessage: (_msg) => { /* Could extend to support messages */ },
       finish: () => { stopLoading() }
     }
   }

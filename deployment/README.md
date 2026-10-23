@@ -190,6 +190,21 @@ crontab -e
 0 12 * * * /usr/bin/certbot renew --quiet
 ```
 
+## 📦 Verified Container Images
+
+Pull requests build and scan the API and frontend images but do not publish them. After the checks pass:
+
+- A push to `main` publishes `main` and `sha-<commit>` tags.
+- A Git tag such as `v1.2.3` publishes `1.2.3` and `sha-<commit>` tags.
+- API: `ghcr.io/vajidshaik44/blogcms/backend`
+- Frontend: `ghcr.io/vajidshaik44/blogcms/frontend`
+
+The workflow publishes the same image artifacts that passed Trivy, and does not deploy them to the VPS. GHCR package visibility is managed separately in the repository's package settings.
+
+## ☸️ Kubernetes Test Deployment
+
+Kubernetes manifests and staging-cluster instructions are in [deployment/kubernetes](./kubernetes/README.md). They use an external MySQL database and do not modify the current VPS or production DNS.
+
 ## 🔧 Useful Commands
 
 ### Application Management

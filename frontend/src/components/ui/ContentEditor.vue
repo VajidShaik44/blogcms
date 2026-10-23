@@ -223,7 +223,7 @@ const renderedContent = computed(() => {
     .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>')
     .replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold mt-5 mb-3">$1</h2>')
     .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold mt-4 mb-2">$1</h3>')
-    .replace(/^\> (.*$)/gm, '<blockquote class="border-l-4 border-secondary-300 pl-4 italic">$1</blockquote>')
+    .replace(/^> (.*$)/gm, '<blockquote class="border-l-4 border-secondary-300 pl-4 italic">$1</blockquote>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary-600 hover:text-primary-800 underline">$1</a>')
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg" />')
     .replace(/\n\n/g, '</p><p>')

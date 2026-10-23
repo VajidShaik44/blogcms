@@ -27,7 +27,7 @@ export default defineConfig({
       '/about',
       '/contact'
     ],
-    async onRoutesGenerated(routes, context) {
+    async onRoutesGenerated(routes, _context) {
       // Generate routes for posts and categories dynamically
       const { generateDynamicRoutes } = await import('./src/utils/ssg-routes.js')
       const dynamicRoutes = await generateDynamicRoutes()

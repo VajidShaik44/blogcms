@@ -59,9 +59,6 @@ coverage.html
 # Air (live reload) temp files
 tmp/
 
-# Docker
-.dockerignore
-
 # Test cache
 .test_cache/
 

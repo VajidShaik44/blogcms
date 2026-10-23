@@ -252,7 +252,7 @@ func TestPostRepository(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get published posts
-		posts, err := postRepo.GetPublished(10, 0)
+		posts, _, err := postRepo.List(1, 10, map[string]interface{}{"status": "published"})
 		require.NoError(t, err)
 
 		// Check that only published posts are returned
@@ -263,7 +263,7 @@ func TestPostRepository(t *testing.T) {
 
 	t.Run("GetByAuthorID", func(t *testing.T) {
 		// Get posts by author
-		posts, err := postRepo.GetByAuthorID(testData.Author.ID, 10, 0)
+		posts, _, err := postRepo.GetByAuthor(testData.Author.ID, 1, 10)
 		require.NoError(t, err)
 
 		// Verify all posts belong to the author
@@ -274,7 +274,7 @@ func TestPostRepository(t *testing.T) {
 
 	t.Run("GetByCategoryID", func(t *testing.T) {
 		// Get posts by category
-		posts, err := postRepo.GetByCategoryID(testData.Category.ID, 10, 0)
+		posts, _, err := postRepo.GetByCategory(testData.Category.ID, 1, 10)
 		require.NoError(t, err)
 
 		// Verify all posts belong to the category
@@ -350,7 +350,11 @@ func TestPostRepository(t *testing.T) {
 		require.NoError(t, err)
 
 		// Search for posts
-		posts, err := postRepo.Search("technology", 10, 0)
+		posts, _, err := postRepo.Search(&models.PostSearchRequest{
+			Query: "technology",
+			Page:  1,
+			Limit: 10,
+		})
 		require.NoError(t, err)
 
 		// Should find at least one post

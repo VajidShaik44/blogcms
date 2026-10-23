@@ -79,7 +79,7 @@ export default defineConfig({
     crittersOptions: {
       reduceInlineStyles: false,
     },
-    includedRoutes(paths, routes) {
+    includedRoutes(paths) {
       // Include all static routes and dynamic routes for posts/categories
       return paths.filter((i) => !i.includes(':') && !i.includes('*'))
     },
