@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogcms-api
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: api
+          ports:
+            - name: http
+              containerPort: 8080
+              hostPort: 18081
+              hostIP: 127.0.0.1
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: blogcms-uploads

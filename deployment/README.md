@@ -205,6 +205,8 @@ The workflow publishes the same image artifacts that passed Trivy, and does not 
 
 Kubernetes manifests and staging-cluster instructions are in [deployment/kubernetes](./kubernetes/README.md). They use an external MySQL database and do not modify the current VPS or production DNS.
 
+For the existing single VPS, see the [production K3s guide](./kubernetes-single-vps/README.md); it keeps host Nginx/TLS and the existing MySQL/uploads in place during validation.
+
 ## 🔧 Useful Commands
 
 ### Application Management

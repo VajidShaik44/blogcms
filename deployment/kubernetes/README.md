@@ -2,6 +2,8 @@
 
 These manifests provide a starting point for deploying the API and frontend to a Kubernetes cluster. They do not create a database, install an ingress controller, or alter the existing VPS deployment.
 
+For the existing production VPS, use the separate [single-node K3s deployment guide](../kubernetes-single-vps/README.md). Do not apply this generic staging configuration to the production host.
+
 ## Prerequisites
 
 - A Kubernetes cluster with `kubectl` and Kustomize support.

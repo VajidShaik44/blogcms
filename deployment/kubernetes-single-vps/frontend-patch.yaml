@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogcms-frontend
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          ports:
+            - name: http
+              containerPort: 80
+              hostPort: 18080
+              hostIP: 127.0.0.1
